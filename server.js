@@ -3,9 +3,8 @@ var path = require("path");
 var bodyParser = require('body-parser');
 var mongo = require("mongoose");
 
-var db = mongo.connect("mongodb+srv://Admin:admin1234@cluster0.y6h9eal.mongodb.net/lmsdev");
-
-
+//connection to mongodb database named lmsdev
+mongo.connect("mongodb+srv://Admin:admin1234@cluster0.y6h9eal.mongodb.net/lmsdev");
 var app = express()
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,7 +18,9 @@ app.use(function (req, res, next) {
   next();
 });
 
+
 var Schema = mongo.Schema;
+
 let schema = new Schema({
   fgtid: String,
   date: String,
@@ -65,8 +66,6 @@ let attSchema = new Schema({
 
 
 }, { timestamps: { createdAt: 'createdon', updatedAt: 'updatedon' }, strict: false, versionKey: false });
-
-
 var attModel = mongo.model("attendence", attSchema, "attendence");
 
 let configschema = new Schema({
@@ -80,7 +79,6 @@ let configschema = new Schema({
   superuser: [],
  
 }, { timestamps: { createdAt: 'createdon', updatedAt: 'updatedon' }, strict: false , versionKey: false });
-
 var confModel =mongo.model("config", configschema, "config");
 app.get("/api/getConfig", function (req, res) {
 
@@ -151,7 +149,6 @@ app.post("/api/updateUser", function (req, res) {
         }
       });
 })
-
 app.post("/api/deleteUser", function (req, res) {
   model.remove({ _id: req.body.id }, function (err) {
     if (err) {
@@ -162,9 +159,6 @@ app.post("/api/deleteUser", function (req, res) {
     }
   });
 })
-
-
-
 app.get("/api/getUser", function (req, res) {
 
   model.find({}, function (err, data) {
@@ -225,7 +219,6 @@ app.post("/api/updateEmp", function (req, res) {
         }
       });
 })
-
 app.get("/api/getAtt", function (req, res) {
 
   attModel.find({}, function (err, data) {
@@ -237,7 +230,7 @@ app.get("/api/getAtt", function (req, res) {
     }
   });
 })
-app.listen(8081, function () {
 
+app.listen(8081, function () {
   console.log('Example app listening on port 8081!')
 }) 
